@@ -1,4 +1,4 @@
-var mongoose = require('mongoose'),
+var mongoose = require("mongoose"),
     Schema   = mongoose.Schema;
 
 // api_version:    // 2
@@ -42,4 +42,4 @@ var rsvpSchema = new Schema({
     },
 });
 
-module.exports = mongoose.model('Rsvp', rsvpSchema);
+module.exports = mongoose.model("Rsvp", rsvpSchema);
