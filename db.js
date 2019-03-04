@@ -1,13 +1,16 @@
-var mongoose = require("mongoose");
-var config  = require("./config");
+/**
+ * DB module
+ * @module db
+ */
 
-// TODO extract config
+var mongoose = require("mongoose");
+var config = require("./config");
 
 mongoose.connect(config.mongo.uri + config.mongo.db);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.once('open', function () {
     console.log("Succesfully connected to MongoDB.")
 });
 

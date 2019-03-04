@@ -1,3 +1,8 @@
+/**
+ * Rsvp schema
+ * Represents a Meetup invitation.
+ */
+
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema;
 

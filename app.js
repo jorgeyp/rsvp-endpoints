@@ -1,3 +1,8 @@
+/**
+ * App module.
+ * @module app
+ */
+
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -6,7 +11,6 @@ var swaggerUi = require('swagger-ui-express'),
     swaggerDocument = require('./swagger.json');
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
 var db = require("./db");
 
 var app = express();
@@ -17,8 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 
 module.exports = app;
