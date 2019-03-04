@@ -79,7 +79,7 @@ exports.getTopCities = (req, res) => {
   }
   query.exec((err, topCities) => {
     if (err) res.status(500).send(err.message);
-    // Flatten groups array before sending
+    // Build City objects
     res.send(topCities.map((d) => (
       {
         city: d._id,
