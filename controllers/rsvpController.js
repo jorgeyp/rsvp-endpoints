@@ -2,6 +2,9 @@ var mongoose = require("mongoose"),
   Schema = mongoose.Schema;
 require("../models/Rsvp");
 var Rsvp = mongoose.model('Rsvp');
+var parse = require("date-fns/parse"),
+    startOfDay = require('date-fns/start_of_day'),
+    endOfDay = require('date-fns/end_of_day');
 
 /**
  * Gets coordinates (lon, lat) from the request and returns Groups
@@ -47,3 +50,42 @@ exports.getNear = (req, res) => {
     res.send(rsvps.map((d) => d.group));
   });
 }
+
+/**
+ * Gets a date from the request and returns the top cities
+ * sorted by the number of people attending events in that city
+ * on that day.
+ * 
+ * @param  {} req - The received request.
+ * @param  {} res - The response to be sent whit the result.
+ */
+exports.getTopCities = (req, res) => {
+  // Check required params
+  if (!req.query.date) {
+    res.status(400).send("Bad request");
+    return;
+  }
+
+  var date = startOfDay(req.query.date);
+  var nextDay = endOfDay(req.query.date);
+
+  var query = Rsvp.aggregate([
+    { $match: { event_time: { $gte: date, $lte: nextDay } } },
+    { $group: { _id: "$group.group_city", people: { $sum: "$guests" } } },
+    { $sort: { people: -1 } }
+  ]);
+  if (req.query.limit) {
+    query.limit(Number(req.query.limit));
+  }
+  query.exec((err, topCities) => {
+    if (err) res.status(500).send(err.message);
+    // Build City objects
+    res.send(topCities.map((d) => (
+      {
+        city: d._id,
+        people: d.people,
+      }
+    )));
+  });
+}
+
