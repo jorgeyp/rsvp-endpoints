@@ -55,7 +55,8 @@ var rsvpSchema = new Schema({
             type: [Number],
             required: true
         }
-    }
+    },
+    event_time: Date
 }, {collection: 'rsvp'});
 
 module.exports = mongoose.model("Rsvp", rsvpSchema);

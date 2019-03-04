@@ -11,4 +11,7 @@ router.get("/", function (req, res, next) {
 /* GET /near */
 router.get("/near", RsvpController.getNear);
 
+/* GET /topCities */
+router.get("/topCities", RsvpController.getTopCities);
+
 module.exports = router;
